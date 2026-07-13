@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubernetes Periodic Table - Interactive Guide</title>
+  <!-- Google Fonts: Inter and Sora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-main">
+        <h1>Tabla Periódica de Kubernetes</h1>
+        <p class="subtitle">Guía visual e interactiva de arquitectura y recursos de Kubernetes (K8s)</p>
+      </div>
+      
+      <!-- Interactive Legend -->
+      <div class="legend-container">
+        <h3>Grupos y Categorías</h3>
+        <div class="legend-grid">
+          <div class="legend-item" data-group="control-plane">
+            <span class="legend-color control-plane"></span>
+            <span class="legend-text">Control Plane & Infra</span>
+          </div>
+          <div class="legend-item" data-group="core">
+            <span class="legend-color core"></span>
+            <span class="legend-text">Core Components</span>
+          </div>
+          <div class="legend-item" data-group="config">
+            <span class="legend-color config"></span>
+            <span class="legend-text">Config & Data Management</span>
+          </div>
+          <div class="legend-item" data-group="other">
+            <span class="legend-color other"></span>
+            <span class="legend-text">Other Elements</span>
+          </div>
+          <div class="legend-item" data-group="monitoring">
+            <span class="legend-color monitoring"></span>
+            <span class="legend-text">Monitoring & Observability</span>
+          </div>
+          <div class="legend-item" data-group="backup-dr">
+            <span class="legend-color backup-dr"></span>
+            <span class="legend-text">Backup & Disaster Recovery</span>
+          </div>
+          <div class="legend-item" data-group="security">
+            <span class="legend-color security"></span>
+            <span class="legend-text">Security & Identity</span>
+          </div>
+          <div class="legend-item" data-group="governance">
+            <span class="legend-color governance"></span>
+            <span class="legend-text">Governance & Compliance</span>
+          </div>
+          <div class="legend-item" data-group="networking">
+            <span class="legend-color networking"></span>
+            <span class="legend-text">Networking</span>
+          </div>
+          <div class="legend-item" data-group="stateful">
+            <span class="legend-color stateful"></span>
+            <span class="legend-text">Stateful Applications</span>
+          </div>
+          <div class="legend-item" data-group="cicd">
+            <span class="legend-color cicd"></span>
+            <span class="legend-text">CI/CD & Deployments</span>
+          </div>
+          <div class="legend-item" data-group="autoscaling">
+            <span class="legend-color autoscaling"></span>
+            <span class="legend-text">Autoscaling & LB</span>
+          </div>
+          <div class="legend-item" data-group="resource">
+            <span class="legend-color resource"></span>
+            <span class="legend-text">Resource Management</span>
+          </div>
+          <div class="legend-item" data-group="package">
+            <span class="legend-color package"></span>
+            <span class="legend-text">Package & Config Sync</span>
+          </div>
+        </div>
+        <button id="clear-filter" class="btn-clear hidden">Mostrar Todos</button>
+      </div>
+    </header>
+
+    <main class="table-wrapper">
+      <div id="periodic-table" class="periodic-table">
+        <!-- Elements will be injected dynamically here -->
+      </div>
+    </main>
+
+    <!-- Details Sidebar Drawer -->
+    <aside id="details-drawer" class="details-drawer">
+      <div class="drawer-header">
+        <button id="close-drawer" class="btn-close">&times;</button>
+        <div class="drawer-element-header">
+          <div id="drawer-element-badge" class="element-badge">H</div>
+          <div class="drawer-title-wrapper">
+            <h2 id="drawer-element-name">Element Name</h2>
+            <div id="drawer-element-number">#1</div>
+          </div>
+        </div>
+      </div>
+      <div class="drawer-body">
+        <div class="detail-section">
+          <h3>Descripción</h3>
+          <p id="drawer-element-desc">Description of the element goes here.</p>
+        </div>
+        
+        <div id="section-kubectl" class="detail-section">
+          <h3>Comandos Frecuentes</h3>
+          <pre><code id="drawer-element-kubectl" class="language-bash">kubectl get pods</code></pre>
+        </div>
+
+        <div id="section-yaml" class="detail-section">
+          <h3>Manifiesto de Ejemplo (YAML)</h3>
+          <div class="code-header">
+            <span>YAML</span>
+            <button id="btn-copy-yaml" class="btn-copy">Copiar</button>
+          </div>
+          <pre><code id="drawer-element-yaml" class="language-yaml">apiVersion: v1</code></pre>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Load Scripts -->
+  <script src="data/elements.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
