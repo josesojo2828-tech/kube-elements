@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Kube-Elements Tests</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #0c0c12; color: #f3f4f6; }
+    h1 { color: #a5b4fc; }
+    .test { padding: 0.5rem; margin: 0.5rem 0; border-radius: 6px; }
+    .pass { background: rgba(16, 185, 129, 0.15); border-left: 4px solid #10b981; }
+    .fail { background: rgba(239, 68, 68, 0.15); border-left: 4px solid #ef4444; }
+    .pass::before { content: "✅ "; }
+    .fail::before { content: "❌ "; }
+    .summary { margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Kube-Elements Tests</h1>
+  <div id="results"></div>
+
+  <script src="../data/elements.js"></script>
+  <script>
+    const results = document.getElementById("results");
+    let passed = 0;
+    let failed = 0;
+
+    function test(name, condition) {
+      const div = document.createElement("div");
+      div.className = `test ${condition ? "pass" : "fail"}`;
+      div.textContent = name;
+      results.appendChild(div);
+      if (condition) passed++; else failed++;
+    }
+
+    function testEq(name, actual, expected) {
+      test(`${name}: ${actual} === ${expected}`, actual === expected);
+    }
+
+    // === TESTS ===
+    
+    // 1. Elements array exists
+    test("KUBE_ELEMENTS array exists", typeof KUBE_ELEMENTS !== "undefined" && Array.isArray(KUBE_ELEMENTS));
+    
+    // 2. Has elements
+    testEq("Has at least 100 elements", KUBE_ELEMENTS.length >= 100, true);
+    
+    // 3. All elements have required fields
+    const required = ["number", "symbol", "name", "group", "row", "col", "desc"];
+    let allValid = true;
+    KUBE_ELEMENTS.forEach(el => {
+      required.forEach(field => {
+        if (el[field] === undefined || el[field] === null) allValid = false;
+      });
+    });
+    test("All elements have required fields", allValid);
+    
+    // 4. No duplicate numbers
+    const numbers = KUBE_ELEMENTS.map(el => el.number);
+    testEq("No duplicate element numbers", new Set(numbers).size, numbers.length);
+    
+    // 5. All groups are valid
+    const validGroups = ["control-plane", "core", "config", "other", "monitoring", "backup-dr",
+      "security", "governance", "networking", "stateful", "cicd", "autoscaling", "resource", "package"];
+    const groups = new Set(KUBE_ELEMENTS.map(el => el.group));
+    let allValidGroups = true;
+    groups.forEach(g => { if (!validGroups.includes(g)) allValidGroups = false; });
+    test("All groups are valid", allValidGroups);
+    
+    // 6. Unique symbols
+    const symbols = KUBE_ELEMENTS.map(el => el.symbol);
+    testEq("No duplicate symbols", new Set(symbols).size, symbols.length);
+    
+    // 7. All elements have desc with content
+    let allHaveDesc = KUBE_ELEMENTS.every(el => el.desc && el.desc.length > 10);
+    test("All elements have descriptions", allHaveDesc);
+
+    // Summary
+    const summary = document.createElement("div");
+    summary.className = "summary";
+    summary.innerHTML = `<strong>Resultado:</strong> ${passed} pasaron, ${failed} fallaron de ${passed + failed} tests`;
+    results.appendChild(summary);
+  </script>
+</body>
+</html>
