@@ -12,7 +12,9 @@
 | Elemento | Funcionalidad |
 |----------|--------------|
 | **🧩 Grilla** | 120+ elementos organizados por categorías: Control Plane, Core, Networking, Security, CI/CD, etc. |
+| **🔍 Búsqueda** | Filtrado instantáneo por nombre, símbolo o descripción |
 | **🎨 Categorías** | Filtrá por grupo (control-plane, core, networking, security, etc.) haciendo clic en la leyenda |
+| **🌓 Dark/Light mode** | Toggle para cambiar entre tema oscuro y claro |
 | **📖 Drawer lateral** | Al hacer clic en un elemento: descripción, comandos `kubectl` frecuentes y manifiesto YAML de ejemplo |
 | **📋 Copiar YAML** | Botón "Copiar" en el drawer para llevarte el manifiesto al portapapeles |
 
@@ -49,17 +51,33 @@ python3 -m http.server 8080
 npx serve .
 ```
 
+### GitHub Pages
+
+El proyecto es 100% estático, ideal para GitHub Pages:
+
+1. Andá a **Settings > Pages** del repo
+2. En **Source** seleccioná **GitHub Actions**
+3. El workflow `.github/workflows/pages.yml` se encarga del deploy automático
+
+O simplemente configurá **Deploy from a branch** → `main` + `/ (root)`.
+
 ## Desarrollo
 
 ```
 kube-elements/
-├── index.html          # Página principal
-├── app.js              # Lógica interactiva (213 líneas)
-├── style.css           # Estilos completos
+├── index.html              # Página principal
+├── app.js                  # Lógica interactiva (288 líneas)
+├── style.css               # Estilos completos con dark/light mode
 ├── data/
-│   └── elements.js     # Base de datos de 120+ elementos
-├── Dockerfile          # Multi-stage con nginx alpine
-└── docker-compose.yml  # Puerto 8080
+│   └── elements.js         # Base de datos de 120+ elementos
+├── tests/
+│   └── tests.html          # Tests de integridad de datos
+├── Dockerfile              # Nginx alpine
+├── docker-compose.yml      # Puerto 8080
+├── .github/
+│   └── workflows/
+│       └── pages.yml       # Deploy a GitHub Pages
+└── README.md
 ```
 
 ## Roadmap
@@ -67,12 +85,13 @@ kube-elements/
 - [x] Grilla interactiva con 120+ elementos
 - [x] Drawer con descripción, kubectl y YAML
 - [x] Filtro por categorías
+- [x] Búsqueda por nombre
+- [x] Vista oscura/clara
 - [x] Docker + docker-compose
-- [ ] Búsqueda por nombre
-- [ ] Vista oscura/clara
+- [x] GitHub Pages
 - [ ] Soporte multilenguaje
 - [ ] Exportar elementos como PDF
-- [ ] Tests automatizados
+- [ ] Tests automatizados (headless)
 
 ## Licencia
 

@@ -1,22 +1,19 @@
-version: '3.8'
-
 services:
   kube-elements:
     build: .
     container_name: kube-elements
     restart: unless-stopped
-    labels:
-      # Enable Traefik for this container
-      - "traefik.enable=true"
-      # Expose on http://kube-elements.local (or customize your domain)
-      - "traefik.http.routers.kube-elements.rule=Host(`kube-elements.local`)"
-      - "traefik.http.routers.kube-elements.entrypoints=web"
-      # Nginx default port inside the container
-      - "traefik.http.services.kube-elements.loadbalancer.server.port=80"
-    networks:
-      - traefik-net
-
-networks:
-  traefik-net:
-    external: true
-    name: web # Adjust this to your existing Traefik network name if different (e.g. traefik_default, web, proxy)
+    ports:
+      - "8080:80"
+    # Si usás Traefik, comentá el `ports` de arriba y descomentá esto:
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.kube-elements.rule=Host(`kube-elements.local`)"
+    #   - "traefik.http.routers.kube-elements.entrypoints=web"
+    #   - "traefik.http.services.kube-elements.loadbalancer.server.port=80"
+    # networks:
+    #   - traefik-net
+# networks:
+#   traefik-net:
+#     external: true
+#     name: web
