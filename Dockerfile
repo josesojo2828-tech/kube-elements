@@ -1,8 +1,10 @@
-# Use lightweight Nginx alpine image
-FROM nginx:alpine
+# Use a pinned version for reproducible builds
+FROM nginx:1.27-alpine
 
-# Copy all static assets to Nginx default html directory
+# Copy only the public static assets
 COPY . /usr/share/nginx/html/
 
-# Expose port 80
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost/ > /dev/null || exit 1
+
 EXPOSE 80

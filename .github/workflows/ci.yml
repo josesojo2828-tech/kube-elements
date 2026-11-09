@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate element data
+        run: node tests/validate-data.js
+
+      - name: Build image
+        run: docker build -t kube-elements:ci .
+
+      - name: Smoke test container
+        run: |
+          docker run -d --name kube-elements -p 8081:80 kube-elements:ci
+          for i in $(seq 1 15); do
+            if curl -fsS http://localhost:8081/ > /dev/null; then
+              echo "container responds"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "container did not respond"
+          docker logs kube-elements
+          exit 1

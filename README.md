@@ -71,14 +71,33 @@ kube-elements/
 ├── data/
 │   └── elements.js         # Base de datos de 120+ elementos
 ├── tests/
-│   └── tests.html          # Tests de integridad de datos
-├── Dockerfile              # Nginx alpine
+│   ├── tests.html          # Arnés manual en el navegador
+│   └── validate-data.js    # Validación automática (node, sin dependencias)
+├── Dockerfile              # Nginx 1.27-alpine con healthcheck
 ├── docker-compose.yml      # Puerto 8080
+├── Makefile                # test · serve · image
 ├── .github/
 │   └── workflows/
-│       └── pages.yml       # Deploy a GitHub Pages
+│       ├── pages.yml       # Deploy a GitHub Pages
+│       └── ci.yml          # Validación + build + smoke test
 └── README.md
 ```
+
+## Tests
+
+Validación automática de la base de datos, sin navegador ni dependencias:
+
+```bash
+node tests/validate-data.js
+```
+
+Verifica que existan al menos 120 elementos, que los números atómicos y las
+coordenadas `(row, col)` sean únicos, y que ningún campo requerido esté vacío.
+El CI lo corre en cada push, junto con el build de la imagen y un smoke test
+que levanta el contenedor y comprueba que responda.
+
+Para inspección manual existe `tests/tests.html`: abrilo en el navegador y
+muestra el resultado de cada verificación.
 
 ## Roadmap
 
@@ -91,7 +110,7 @@ kube-elements/
 - [x] GitHub Pages
 - [ ] Soporte multilenguaje
 - [ ] Exportar elementos como PDF
-- [ ] Tests automatizados (headless)
+- [x] Tests automatizados (headless)
 
 ## Licencia
 

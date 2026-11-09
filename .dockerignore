@@ -3,5 +3,9 @@
 .dockerignore
 README.md
 docker-compose.yml
+Dockerfile
+Makefile
+LICENSE
+.github/
 tests/
 *.md
